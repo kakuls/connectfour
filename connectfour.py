@@ -18,7 +18,7 @@ def Create_Board ():
 	board = {}
 	for column in range (0,7):
 		for row in range (0,6):
-			board[row, column] = "0"
+			board[row, column] = 0
 	return board
 
 board = Create_Board()
@@ -44,20 +44,24 @@ print board
 # add checks for valid row and column numbers
 
 def check_move (move_tuple, player, players):
-		if board[move_tuple] == "0":
-			if board[(move_tuple[0]-1), move_tuple[1]] != "0":
-				check_move = True
-				board[move_tuple] = players[player][0]
+		if board[move_tuple] == 0 :
+			if move_tuple[1] != 0:
+				if board[move_tuple[0], move_tuple[1]-1] != 0:
+					check_move = True
+					board[move_tuple] = players[player][0]
+					print "board value at move tuple = %r" %  board[move_tuple]
+				else:
+					return False, "illegal move: there is no piece below this position!"
 			else:
-				move_tuple = raw_input ("illegal move: there is no piece below this position, please enter another move: ")
-				print "----Board: "
-				print board
+				board[move_tuple] = players[player][0]
+				return True, "Yes!"
 		else: 
-			move_tuple = raw_input ("illegal move: there is already a piece in this position, please enter another move: ")
-			print "----Board: "
-			print board
+			return False, "illegal move: there is already a piece in this position! please"
 
-
+# this function checks if the move that the player chooses results in a win
+# in this game, you win if your move leads to a four in a row along four dimensions: vertical, horizontal, w_diagonal, and e_diagonal
+# vertical is easy, you just check the 3 spots below the move just made
+#
 
 
 # this is the main game loop that runs as long as win is not equal to True. It rotates through the two players, asks them for a move,
@@ -71,8 +75,8 @@ while True:
 		move_tuple_raw = raw_input ("Player %s enter your move. Remember to enter the column# first, followed by a comma, and then with the row#: " % (players[player][1]))
 		move_tuple_list = move_tuple_raw.split(",")
 		move_tuple = (int(move_tuple_list[0]),int(move_tuple_list[1]))
-		# print "move_tuple = %s" % (move_tuple)
-		if check_move(move_tuple, player, players) == True:
+		print "move_tuple = %r" % (move_tuple,)
+		if check_move(move_tuple, player, players)[0] == True:
 			if check_win (move_tuple, player) == True:
 				winner = player
 				print "%s wins!" % (winner)
@@ -84,6 +88,7 @@ while True:
 					play_again == raw_input ("I don't understand you, play again? [y/n]")
 			else:
 				print 'next turn/n'
-
+		else:
+			print "%s" % check_move(move_tuple, player, players)[1]
 		
 	
