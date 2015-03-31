@@ -60,8 +60,60 @@ def check_move (move_tuple, player, players):
 
 # this function checks if the move that the player chooses results in a win
 # in this game, you win if your move leads to a four in a row along four dimensions: vertical, horizontal, w_diagonal, and e_diagonal
-# vertical is easy, you just check the 3 spots below the move just made
-#
+# ecah of the four ways to win is a sub function.
+
+check_win(board, move_tuple, player)
+	if checkvert(board, move_tuple, player) or checkhori(board, move_tuple, player) or checkdiag_e(board, move_tuple, player) or checkdiag_w(board, move_tuple, player):
+		check_win = True
+	else:
+		check_win = False
+
+checkvert(board, move_tuple, player)
+	wincount =1
+		while wincount < 4
+			for i in range (1,4):
+				if spot_value at (column, row-i) == color of player
+					wincount = wincount+1
+				else:
+					return false
+
+checkhori(board, move_tuple, player)
+	wincount = 1
+	while spot_value == color of player
+		if spot_value at (column +1, row) == color ofplayer:
+			wincount = wincount +1
+			column = column +1
+		else:
+			while spot_value == color of player:
+				if spot_value at (column -1, row) == color ofplayer:
+					wincount = wincount +1
+					column = column +1
+
+
+checkdiag_e(board, move_tuple, player)
+	wincount = 1
+		while spot_value == color of player:
+			if spot_value at (column +1, row-1) == color ofplayer:
+				wincount = wincount +1
+				column = column +1
+			else:
+				if spot_value at (column -1, row+1) == color ofplayer:
+					wincount = wincount +1
+					column = column +1
+
+checkdiag_w(board, move_tuple, player)
+	wincount = 1	
+		while spot_value == color of player: 
+			if spot_value at (column +1, row+1) == color ofplayer:
+				wincount = wincount +1
+				column = column +1
+			if spot_value at (column -1, row-1) == color ofplayer:
+				wincount = wincount +1
+				column = column +1
+
+
+
+
 
 
 # this is the main game loop that runs as long as win is not equal to True. It rotates through the two players, asks them for a move,
@@ -77,7 +129,7 @@ while True:
 		move_tuple = (int(move_tuple_list[0]),int(move_tuple_list[1]))
 		print "move_tuple = %r" % (move_tuple,)
 		if check_move(move_tuple, player, players)[0] == True:
-			if check_win (move_tuple, player) == True:
+			if check_win (board, move_tuple, player) == True:
 				winner = player
 				print "%s wins!" % (winner)
 				play_again = raw_input ("Play again? [y/n]")
